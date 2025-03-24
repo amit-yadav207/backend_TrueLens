@@ -1,4 +1,5 @@
 import os
+import platform
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import pandas as pd
@@ -17,8 +18,11 @@ from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 app = Flask(__name__)
 CORS(app)  # Enable CORS for frontend communication
 
-# Set the path to tesseract.exe (Update this path if needed)
-pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+# Detect the OS and set the Tesseract path accordingly
+if platform.system() == "Windows":
+    pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+else:
+    pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"
 
 # Load dataset and preprocess
 df = pd.read_csv("Constraints1.csv")
